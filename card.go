@@ -41,3 +41,20 @@ func (c Card) String() string {
 	}
 	return fmt.Sprintf("%s of %ss", c.Rank.String(), c.Suit.String())
 }
+
+var suits = [...]Suit{Spade, Diamond, Club, Heart}
+
+const (
+	minRank = Ace
+	maxRank = King
+)
+
+func New() []Card {
+	var cards []Card
+	for _, suit := range suits {
+		for rank := minRank; rank <= maxRank; rank++ {
+			cards = append(cards, Card{Rank: rank, Suit: suit})
+		}
+	}
+	return cards
+}

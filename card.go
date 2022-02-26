@@ -1,7 +1,10 @@
 //go:generate stringer -type=Suit,Rank
 package deck
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 type Suit uint8
 type Rank uint8
@@ -49,12 +52,26 @@ const (
 	maxRank = King
 )
 
-func New() []Card {
+func New(opts ...func([]Card) []Card) []Card {
 	var cards []Card
 	for _, suit := range suits {
 		for rank := minRank; rank <= maxRank; rank++ {
 			cards = append(cards, Card{Rank: rank, Suit: suit})
 		}
 	}
+	for _, opt := range opts {
+		cards = opt(cards)
+	}
 	return cards
+}
+
+func DefaultSort(cards []Card) []Card {
+	sort.Slice(cards, func(i, j int) bool {
+		return absoluteRank(cards[i]) < absoluteRank(cards[j])
+	})
+	return cards
+}
+
+func absoluteRank(card Card) int {
+	return (int(card.Suit) * int(maxRank)) + int(card.Rank)
 }

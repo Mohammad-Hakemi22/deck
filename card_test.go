@@ -31,7 +31,16 @@ func TestString(t *testing.T) {
 func TestNew(t *testing.T) {
 	cards := New()
 	if len(cards) != 52 {
-		t.Error("something worng in number of cards")
+		t.Error("something went wrong in number of cards")
+		return
+	}
+}
+
+func TestDefaultSort( t *testing.T) {
+	cards := New(DefaultSort)
+	expected := Card{Rank: Ace, Suit: Spade}
+	if cards[0] != expected {
+		t.Error("something went wrong in sort")
 		return
 	}
 }

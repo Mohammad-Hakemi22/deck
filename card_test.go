@@ -36,11 +36,25 @@ func TestNew(t *testing.T) {
 	}
 }
 
-func TestDefaultSort( t *testing.T) {
+func TestDefaultSort(t *testing.T) {
 	cards := New(DefaultSort)
 	expected := Card{Rank: Ace, Suit: Spade}
 	if cards[0] != expected {
 		t.Error("something went wrong in sort")
+		return
+	}
+}
+
+func TestJokers(t *testing.T) {
+	cards := New(Jokers(4))
+	counter := 0
+	for _, c := range cards {
+		if c.Suit == Joker {
+			counter++
+		}
+	}
+	if counter != 4 {
+		t.Error("expected 4 Jokers; got: ", counter)
 		return
 	}
 }

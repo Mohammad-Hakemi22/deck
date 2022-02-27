@@ -1,6 +1,9 @@
 package deck
 
-import "testing"
+import (
+	"math/rand"
+	"testing"
+)
 
 type cardtesting struct {
 	cd       Card
@@ -45,6 +48,19 @@ func TestDefaultSort(t *testing.T) {
 	}
 }
 
+func TestShuffle(t *testing.T) {
+	// with seed 0 -> shuffle is : [40 35 ...]
+	shuffleRand = rand.New(rand.NewSource(0))
+	original := New()
+	first := original[40]
+	second := original[35]
+	cards := New(Shuffle)
+	if cards[0] != first || cards[1] != second {
+		t.Errorf("expected first: %s, second: %s; got first: %s, second: %s", first, second, cards[0], cards[1])
+		return
+	}
+}
+
 func TestJokers(t *testing.T) {
 	cards := New(Jokers(4))
 	counter := 0
@@ -68,5 +84,12 @@ func TestFilter(t *testing.T) {
 			t.Error("Fliter not working!")
 			return
 		}
+	}
+}
+
+func TestDeck(t *testing.T) {
+	cards := New(Deck(4))
+	if len(cards) != 52 * 4 {
+		t.Errorf("expected: %d; got: %d",52*4 , len(cards))
 	}
 }

@@ -58,3 +58,15 @@ func TestJokers(t *testing.T) {
 		return
 	}
 }
+
+func TestFilter(t *testing.T) {
+	cards := New(Filter(func(card Card) bool {
+		return card.Rank == Two || card.Rank == Three
+	}))
+	for _, c := range cards {
+		if c.Rank == Two || c.Rank == Three {
+			t.Error("Fliter not working!")
+			return
+		}
+	}
+}

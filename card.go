@@ -3,7 +3,9 @@ package deck
 
 import (
 	"fmt"
+	"math/rand"
 	"sort"
+	"time"
 )
 
 type Suit uint8
@@ -74,4 +76,14 @@ func DefaultSort(cards []Card) []Card {
 
 func absoluteRank(card Card) int {
 	return (int(card.Suit) * int(maxRank)) + int(card.Rank)
+}
+
+func Shuffle(card []Card) []Card {
+	res := make([]Card, len(card))
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+	perm := r.Perm(len(card))
+	for i, val := range perm {
+		res[i] = card[val]
+	}
+	return res
 }
